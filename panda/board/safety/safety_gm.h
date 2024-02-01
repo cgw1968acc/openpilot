@@ -17,7 +17,7 @@ const LongitudinalLimits GM_ASCM_LONG_LIMITS = {
 };
 
 const LongitudinalLimits GM_CAM_LONG_LIMITS = {
-  .max_gas = 8650,
+  .max_gas = 8848,
   .min_gas = 5610,
   .inactive_gas = 5650,
   .max_brake = 400,
@@ -89,19 +89,19 @@ bool gm_force_ascm = false;
 
 static void handle_gm_wheel_buttons(const CANPacket_t *to_push) {
   int button = (GET_BYTE(to_push, 5) & 0x70U) >> 4;
-  
+
   // enter controls on falling edge of set or rising edge of resume (avoids fault)
   bool set = (button != GM_BTN_SET) && (cruise_button_prev == GM_BTN_SET);
   bool res = (button == GM_BTN_RESUME) && (cruise_button_prev != GM_BTN_RESUME);
   if (set || res) {
     controls_allowed = true;
   }
-  
+
   // exit controls on cancel press
   if (button == GM_BTN_CANCEL) {
     controls_allowed = false;
   }
-  
+
   cruise_button_prev = button;
 }
 

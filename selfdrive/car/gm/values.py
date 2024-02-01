@@ -54,6 +54,8 @@ class CarControllerParams:
 
       if CP.carFingerprint in SLOW_ACC and Params().get_bool("GasRegenCmd"):
         self.MAX_GAS = 8650
+        self.MAX_GAS_PLUS = 8650 # Don't Stack Extra Speed
+        self.ACCEL_MAX_PLUS = 2
 
     elif CP.carFingerprint in SDGM_CAR:
       self.MAX_GAS = 3400
