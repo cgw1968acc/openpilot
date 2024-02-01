@@ -65,6 +65,7 @@ class CarControllerParams:
 
     else:
       self.MAX_GAS = 7168  # Safety limit, not ACC max. Stock ACC >8192 from standstill.
+      self.MAX_GAS_PLUS = 8191 # 8292 uses new bit, possible but not tested. Matches Twilsonco tw-main max
       self.MAX_ACC_REGEN = 5500  # Max ACC regen is slightly less than max paddle regen
       self.INACTIVE_REGEN = 5500
       # ICE has much less engine braking force compared to regen in EVs,

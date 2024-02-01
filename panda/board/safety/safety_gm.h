@@ -10,7 +10,7 @@ const SteeringLimits GM_STEERING_LIMITS = {
 };
 
 const LongitudinalLimits GM_ASCM_LONG_LIMITS = {
-  .max_gas = 7168,
+  .max_gas = 8191,
   .min_gas = 5500,
   .inactive_gas = 5500,
   .max_brake = 400,
