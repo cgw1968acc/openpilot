@@ -107,6 +107,14 @@ class Track:
       "radarTrackId": self.identifier,
     }
 
+  def get_lane_position(self) -> str:
+    if self.yRel > 0 and self.vRel > 5.0:
+      return 'left'
+    elif self.yRel < 0 and self.vRel > 5.0:
+      return 'right'
+    else:
+      return 'front'
+
   def potential_low_speed_lead(self, v_ego: float):
     # stop for stuff in front of you and low speed, even without model confirmation
     # Radar points closer than 0.75, are almost always glitches on toyota radars
@@ -191,6 +199,31 @@ def get_lead(v_ego: float, ready: bool, tracks: Dict[int, Track], lead_msg: capn
 
   return lead_dict
 
+def get_adjacent_lead(v_ego: float, ready: bool, tracks: Dict[int, Track], lead_msg: capnp._DynamicStructReader,
+                      model_v_ego: float, left: bool) -> Dict[str, Any]:
+  # Determine leads, this is where the essential logic happens
+  if len(tracks) > 0 and ready and lead_msg.prob != 0:
+    # Filter tracks based on the specified lane position
+    if left:
+      lane_tracks = {tid: tr for tid, tr in tracks.items() if tr.get_lane_position() == 'left'}
+    else:
+      lane_tracks = {tid: tr for tid, tr in tracks.items() if tr.get_lane_position() == 'right'}
+
+    # Match vision to track for the filtered tracks
+    if lane_tracks:
+      track = match_vision_to_track(v_ego, lead_msg, lane_tracks)
+    else:
+      track = None
+  else:
+    track = None
+
+  lead_dict = {'status': False}
+  if track is not None:
+    lead_dict = track.get_RadarState(lead_msg.prob)
+  elif (track is None) and ready and (lead_msg.prob > .5):
+    lead_dict = get_RadarState_from_vision(lead_msg, v_ego, model_v_ego)
+
+  return lead_dict
 
 class RadarD:
   def __init__(self, radar_ts: float, delay: int = 0):
@@ -258,6 +291,9 @@ class RadarD:
     if len(leads_v3) > 1:
       self.radar_state.leadOne = get_lead(self.v_ego, self.ready, self.tracks, leads_v3[0], model_v_ego, low_speed_override=True)
       self.radar_state.leadTwo = get_lead(self.v_ego, self.ready, self.tracks, leads_v3[1], model_v_ego, low_speed_override=False)
+
+      self.radar_state.leadLeft = get_adjacent_lead(self.v_ego, self.ready, self.tracks, leads_v3[0], model_v_ego, left=True)
+      self.radar_state.leadRight = get_adjacent_lead(self.v_ego, self.ready, self.tracks, leads_v3[0], model_v_ego, left=False)
 
   def publish(self, pm: messaging.PubMaster, lag_ms: float):
     assert self.radar_state is not None

@@ -158,7 +158,7 @@ typedef struct UIScene {
   QPolygonF road_edge_vertices[2];
 
   // lead
-  QPointF lead_vertices[2];
+  QPointF lead_vertices[4];
 
   // DMoji state
   float driver_pose_vals[3];
