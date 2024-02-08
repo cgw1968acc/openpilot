@@ -97,6 +97,13 @@ FrogPilotVehiclesPanel::FrogPilotVehiclesPanel(SettingsWindow *parent) : FrogPil
   addItem(selectModelButton);
   selectModelButton->setVisible(false);
 
+  ButtonControl *viewTune = new ButtonControl(tr("View Tune"), tr("VIEW"), "");
+  connect(viewTune, &ButtonControl::clicked, [=]() {
+    std::string currentModel = params.get("LiveParameters");
+    ConfirmationDialog::rich(QString::fromStdString(currentModel), this);
+  });
+  addItem(viewTune);
+
   ParamControl *forceFingerprint = new ParamControl("ForceFingerprint", "Disable Automatic Fingerprint Detection", "Forces the selected fingerprint and prevents it from ever changing.", "", this);
   addItem(forceFingerprint);
 
