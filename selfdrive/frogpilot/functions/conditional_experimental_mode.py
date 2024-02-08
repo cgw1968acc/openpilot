@@ -92,10 +92,6 @@ class ConditionalExperimentalMode:
     if standstill:
       return self.experimental_mode
 
-    # Keep Experimental Mode active if slowing down for a red light
-    if (self.stop_lights_lead or not self.lead_slowing_down) and self.slowing_down and self.status_value == 12:
-      return True
-
     # Navigation check
     if self.navigation and modelData.navEnabled and frogpilotNavigation.navigationConditionMet and (self.navigation_lead or not self.lead_detected):
       self.status_value = 5
