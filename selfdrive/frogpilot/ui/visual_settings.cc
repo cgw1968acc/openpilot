@@ -73,9 +73,6 @@ FrogPilotVisualsPanel::FrogPilotVisualsPanel(SettingsWindow *parent) : FrogPilot
       toggle = alertVolumeControlToggle;
     } else if (alertVolumeControlKeys.find(param) != alertVolumeControlKeys.end()) {
       toggle = new FrogPilotParamValueControl(param, title, desc, icon, 0, 100, std::map<int, QString>(), this, false, "%");
-      if (param == "WarningSoftVolume" || param == "WarningImmediateVolume") {
-        toggle = new FrogPilotParamValueControl(param, title, desc, icon, 25, 100, std::map<int, QString>(), this, false, "%");
-      }
 
     } else if (param == "CameraView") {
       std::vector<QString> cameraOptions{tr("Auto"), tr("Standard"), tr("Wide"), tr("Driver")};
@@ -232,7 +229,7 @@ FrogPilotVisualsPanel::FrogPilotVisualsPanel(SettingsWindow *parent) : FrogPilot
 
   QObject::connect(uiState(), &UIState::uiUpdate, this, &FrogPilotVisualsPanel::updateState);
 }
-
+  
 void FrogPilotVisualsPanel::updateState(const UIState &s) {
   started = s.scene.started;
 }
