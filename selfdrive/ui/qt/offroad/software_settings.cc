@@ -137,11 +137,6 @@ SoftwarePanel::SoftwarePanel(QWidget* parent) : ListWidget(parent) {
     updateLabels();
   });
 
-  connect(uiState(), &UIState::offroadTransition, [=](bool offroad) {
-    is_onroad = !offroad;
-    updateLabels();
-  });
-
   QObject::connect(uiState(), &UIState::uiUpdate, this, &SoftwarePanel::automaticUpdate);
 
   updateLabels();
