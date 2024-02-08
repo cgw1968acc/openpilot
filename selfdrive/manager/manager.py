@@ -305,6 +305,9 @@ def manager_init() -> None:
                        dirty=is_dirty(),
                        device=HARDWARE.get_device_type())
 
+  # Start UI early so prepare can happen in the background
+  managed_processes['ui'].start()
+
   # preimport all processes
   for p in managed_processes.values():
     p.prepare()

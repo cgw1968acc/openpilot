@@ -9,6 +9,11 @@ source "$BASEDIR/launch_env.sh"
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
 function agnos_init {
+  # wait longer for weston to come up
+  if [ -f "$BASEDIR/prebuilt" ]; then
+    sleep 5
+  fi
+
   # TODO: move this to agnos
   sudo rm -f /data/etc/NetworkManager/system-connections/*.nmmeta
 
@@ -78,10 +83,7 @@ function launch {
 
   # start manager
   cd selfdrive/manager
-  if [ ! -f $DIR/prebuilt ]; then
-    ./build.py
-  fi
-  ./manager.py
+  ./build.py && ./manager.py
 
   # if broken, keep on screen error
   while true; do sleep 1; done

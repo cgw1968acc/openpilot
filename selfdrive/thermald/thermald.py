@@ -27,7 +27,7 @@ from openpilot.selfdrive.thermald.power_monitoring import PowerMonitoring
 from openpilot.selfdrive.thermald.fan_controller import TiciFanController
 from openpilot.system.version import terms_version, training_version
 
-PREBUILT_FILE = os.path.join(BASEDIR, 'prebuilt')
+PREBUILT = os.path.exists(os.path.join(BASEDIR, 'prebuilt'))
 
 ThermalStatus = log.DeviceState.ThermalStatus
 NetworkType = log.DeviceState.NetworkType
@@ -459,8 +459,10 @@ def thermald_thread(end_event, hw_queue) -> None:
     should_start_prev = should_start
 
     # Create the prebuilt file if it doesn't exist
-    if not os.path.exists(PREBUILT_FILE):
-      os.system(f"touch {PREBUILT_FILE}")
+    if not PREBUILT:
+      prebuilt_path = os.path.join(BASEDIR, 'prebuilt')
+      with open(prebuilt_path, 'a'):
+        os.utime(prebuilt_path, None)
 
 def main():
   hw_queue = queue.Queue(maxsize=1)
