@@ -138,7 +138,6 @@ def main():
   if steer_ratio_stock != CP.steerRatio:
     params_reader.put_float("SteerRatio", CP.steerRatio)
     params_reader.put_float("SteerRatioStock", CP.steerRatio)
-    params_reader.put_bool("DoReboot", True)
 
   min_sr, max_sr = 0.5 * CP.steerRatio, 2.0 * CP.steerRatio
 
