@@ -133,6 +133,9 @@ class CarController:
       pedal_offset = interp(CS.out.vEgo, [0.0, 2.3, MIN_ACC_SPEED + PEDAL_TRANSITION], [-.4, 0.0, 0.2])
       pedal_command = PEDAL_SCALE * (actuators.accel + pedal_offset)
       interceptor_gas_cmd = clip(pedal_command, 0., MAX_INTERCEPTOR_GAS)
+    elif ((self.CP.openpilotLongitudinalControl and CC.cruiseControl.resume) or (not self.CP.openpilotLongitudinalControl and CS.stock_resume_ready)) \
+           and self.CP.carFingerprint in FULL_SPEED_DRCC_CAR and self.CP.enableGasInterceptor and CS.out.cruiseState.standstill:
+      interceptor_gas_cmd = 0.14
     else:
       interceptor_gas_cmd = 0.
 
@@ -182,7 +185,7 @@ class CarController:
     if (self.frame % 3 == 0 and self.CP.openpilotLongitudinalControl) or pcm_cancel_cmd:
       lead = hud_control.leadVisible or CS.out.vEgo < 12.  # at low speed we always assume the lead is present so ACC can be engaged
       # when stopping, send -2.5 raw acceleration immediately to prevent vehicle from creeping, else send actuators.accel
-      accel_raw = -2.5 if stopping and (self.cydia_tune or self.frogs_go_moo_tune) else actuators.accel 
+      accel_raw = -2.5 if stopping and (self.cydia_tune or self.frogs_go_moo_tune) else actuators.accel
 
       # Lexus IS uses a different cancellation message
       if pcm_cancel_cmd and self.CP.carFingerprint in UNSUPPORTED_DSU_CAR:
