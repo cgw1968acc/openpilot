@@ -1,15 +1,35 @@
-from cereal import log, messaging
-from openpilot.selfdrive.boardd.boardd import can_list_to_can_capnp
-from openpilot.selfdrive.car import make_can_msg
-from openpilot.selfdrive.manager.process_config import managed_processes
+#!/usr/bin/env python3
 
-if __name__ == "__main__":
-  pm = messaging.PubMaster(['deviceState', 'pandaStates', 'sendcan'])
-  device_state_msg = messaging.new_message('deviceState')
-  panda_states_msg = messaging.new_message('pandaStates', 1)
+import sys
+import time
+from panda import Panda
 
-  device_state_msg.deviceState.started = True
-  panda_states_msg.pandaStates[0].ignitionLine = True
+unlockCommand = [0x40, 0x05, 0x30, 0x11, 0x00, 0x40, 0x00, 0x00]
+lockCommand = [0x40, 0x05, 0x30, 0x11, 0x00, 0x80, 0x00, 0x00]
+p = Panda()
 
-  can_sends = make_can_msg(0x750, b'\x40\x05\x30\x11\x00\x80\x00\x00', 0)
-  pm.send('sendcan', can_list_to_can_capnp(can_sends, msgtype='sendcan', valid=True))
+def main():
+  p.set_safety_mode(Panda.SAFETY_ALLOUTPUT)
+
+  # args
+  if len(sys.argv) != 2:
+    sys.exit('usage:\n\nroot@localhost:/data/openpilot$ pkill -f openpilot\n\nroot@localhost:/data/openpilot$ doors.py --lock\n\nroot@localhost:/data/openpilot$ doors.py --unlock\n\nroot@localhost:/data/openpilot$ reboot')
+
+  if sys.argv[1]  == '--lock' or sys.argv[1]  == '-l':
+    p.can_send(0x750, bytes(unlockCommand), 0) 
+    p.can_send(0x750, bytes(lockCommand), 0) 
+    p.can_send(0x750, bytes(unlockCommand), 0) 
+    p.can_send(0x750, bytes(lockCommand), 0) 
+
+  if sys.argv[1] == '--unlock' or sys.argv[1] == '-u':
+    p.can_send(0x750, bytes(lockCommand), 0) 
+    p.can_send(0x750, bytes(unlockCommand), 0) 
+    p.can_send(0x750, bytes(lockCommand), 0) 
+    p.can_send(0x750, bytes(unlockCommand), 0) 
+
+  time.sleep(0.2)
+  p.set_safety_mode(Panda.SAFETY_TOYOTA)
+  p.send_heartbeat()
+  print('\n\n\nrelay ON again\nkthxbay\n')
+
+main()

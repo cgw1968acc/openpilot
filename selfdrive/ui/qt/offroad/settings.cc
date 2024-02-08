@@ -294,6 +294,12 @@ DevicePanel::DevicePanel(SettingsWindow *parent) : ListWidget(parent) {
   });
   addItem(flashPandaBtn);
 
+  auto lockDoorsButton = new ButtonControl(tr("Lock Doors"), tr("LOCK"), "Use this button to lock the doors on Toyota/Lexus vehicles.");
+  connect(lockDoorsButton, &ButtonControl::clicked, []() {
+    system("python ../../../../frogpilot/functions/lock_doors.py --lock");
+  });
+  addItem(lockDoorsButton);
+
   QObject::connect(uiState(), &UIState::offroadTransition, [=](bool offroad) {
     for (auto btn : findChildren<ButtonControl *>()) {
       btn->setEnabled(offroad);
