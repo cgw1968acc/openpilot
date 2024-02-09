@@ -47,6 +47,9 @@ class VCruiseHelper:
     self.button_timers = {ButtonType.decelCruise: 0, ButtonType.accelCruise: 0}
     self.button_change_states = {btn: {"standstill": False, "enabled": False} for btn in self.button_timers}
 
+    # FrogPilot variables
+    self.slc = SpeedLimitController
+
   @property
   def v_cruise_initialized(self):
     return self.v_cruise_kph != V_CRUISE_UNSET
@@ -142,9 +145,7 @@ class VCruiseHelper:
     if self.CP.pcmCruise:
       return
 
-    if SpeedLimitController.desired_speed_limit != 0 and frogpilot_variables.set_speed_limit:
-      initial = SpeedLimitController.desired_speed_limit
-    elif conditional_experimental_mode:
+    if conditional_experimental_mode:
       initial = V_CRUISE_INITIAL
     else:
       initial = V_CRUISE_INITIAL_EXPERIMENTAL_MODE if experimental_mode else V_CRUISE_INITIAL
@@ -157,6 +158,9 @@ class VCruiseHelper:
 
     self.v_cruise_cluster_kph = self.v_cruise_kph
 
+    if self.slc.desired_speed_limit != 0 and frogpilot_variables.set_speed_limit:
+      self.v_cruise_kph = self.slc.desired_speed_limit
+      self.v_cruise_cluster_kph = self.v_cruise_kph
 
 def apply_deadzone(error, deadzone):
   if error > deadzone:
