@@ -19,7 +19,7 @@ from openpilot.system import micd
 SAMPLE_RATE = 48000
 SAMPLE_BUFFER = 4096 # (approx 100ms)
 MAX_VOLUME = 1.0
-MIN_VOLUME = 0.1
+MIN_VOLUME = 0.0
 CONTROLS_TIMEOUT = 5 # 5 seconds
 FILTER_DT = 1. / (micd.SAMPLE_RATE / micd.FFT_SAMPLES)
 
@@ -142,6 +142,21 @@ class Soundd:
 
   def calculate_volume(self, weighted_db):
     volume = ((weighted_db - AMBIENT_DB) / DB_SCALE) * (MAX_VOLUME - MIN_VOLUME) + MIN_VOLUME
+
+    if self.alert_volume_control and self.current_alert:
+      volume_map = {
+        'disengage': self.disengage_volume,
+        'engage': self.engage_volume,
+        'prompt': self.prompt_volume,
+        'promptRepeat': self.prompt_distracted_volume,
+        'promptDistracted': self.refuse_volume,
+        'warningSoft': self.warning_soft_volume,
+        'warningImmediate': self.warning_immediate_volume
+      }
+
+      if self.current_alert in volume_map:
+        volume = min(volume_map[self.current_alert], volume)
+
     return math.pow(10, (np.clip(volume, MIN_VOLUME, MAX_VOLUME) - 1))
 
   @retry(attempts=7, delay=3)
@@ -167,20 +182,6 @@ class Soundd:
         if sm.updated['microphone'] and self.current_alert == AudibleAlert.none: # only update volume filter when not playing alert
           self.spl_filter_weighted.update(sm["microphone"].soundPressureWeightedDb)
           self.current_volume = self.calculate_volume(float(self.spl_filter_weighted.x))
-
-        # Alert Volume Control configuration
-        volume_map = {
-          AudibleAlert.disengage: self.disengage_volume,
-          AudibleAlert.engage: self.engage_volume,
-          AudibleAlert.prompt: self.prompt_volume,
-          AudibleAlert.promptRepeat: self.prompt_distracted_volume,
-          AudibleAlert.promptDistracted: self.refuse_volume,
-          AudibleAlert.warningSoft: self.warning_soft_volume,
-          AudibleAlert.warningImmediate: self.warning_immediate_volume
-        }
-
-        if self.alert_volume_control and self.current_alert in volume_map:
-          self.current_volume = min(volume_map[self.current_alert] / 100.0, self.current_volume)
 
         self.get_audible_alert(sm)
 
