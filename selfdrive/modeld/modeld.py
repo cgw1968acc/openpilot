@@ -30,7 +30,7 @@ SEND_RAW_PRED = os.getenv('SEND_RAW_PRED')
 MODEL_NAME = Params().get("Model", encoding='utf-8')
 
 MODEL_PATHS = {
-  ModelRunner.THNEED: Path(__file__).parent / f'models/models/{MODEL_NAME}.thneed',
+  ModelRunner.THNEED: Path(__file__).parent / f'models/{"" if MODEL_NAME == "los-angeles" else "models/"}{MODEL_NAME}.thneed',
   ModelRunner.ONNX: Path(__file__).parent / 'models/supercombo.onnx'}
 
 METADATA_PATH = Path(__file__).parent / 'models/supercombo_metadata.pkl'
