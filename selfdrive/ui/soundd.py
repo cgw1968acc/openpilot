@@ -168,19 +168,8 @@ class Soundd:
           self.spl_filter_weighted.update(sm["microphone"].soundPressureWeightedDb)
           self.current_volume = self.calculate_volume(float(self.spl_filter_weighted.x))
 
-        # Alert Volume Control configuration
-        volume_map = {
-          AudibleAlert.disengage: self.disengage_volume,
-          AudibleAlert.engage: self.engage_volume,
-          AudibleAlert.prompt: self.prompt_volume,
-          AudibleAlert.promptRepeat: self.prompt_distracted_volume,
-          AudibleAlert.promptDistracted: self.refuse_volume,
-          AudibleAlert.warningSoft: self.warning_soft_volume,
-          AudibleAlert.warningImmediate: self.warning_immediate_volume
-        }
-
-        if self.alert_volume_control and self.current_alert in volume_map:
-          self.current_volume = min(volume_map[self.current_alert] / 100.0, self.current_volume)
+        if self.alert_volume_control and self.current_alert in self.volume_map:
+          self.current_volume = min(self.volume_map[self.current_alert] / 100.0, self.current_volume)
 
         self.get_audible_alert(sm)
 
@@ -194,13 +183,16 @@ class Soundd:
 
   def update_frogpilot_params(self):
     self.alert_volume_control = self.params.get_bool("AlertVolumeControl")
-    self.disengage_volume = self.params.get_int("DisengageVolume")
-    self.engage_volume = self.params.get_int("EngageVolume")
-    self.prompt_volume = self.params.get_int("PromptVolume")
-    self.prompt_distracted_volume = self.params.get_int("PromptDistractedVolume")
-    self.refuse_volume = self.params.get_int("RefuseVolume")
-    self.warning_soft_volume = self.params.get_int("WarningSoftVolume")
-    self.warning_immediate_volume = self.params.get_int("WarningImmediateVolume")
+
+    self.volume_map = {
+      AudibleAlert.disengage: self.params.get_int("DisengageVolume"),
+      AudibleAlert.engage: self.params.get_int("EngageVolume"),
+      AudibleAlert.prompt: self.params.get_int("PromptVolume"),
+      AudibleAlert.promptRepeat: self.params.get_int("PromptDistractedVolume"),
+      AudibleAlert.promptDistracted: self.params.get_int("RefuseVolume"),
+      AudibleAlert.warningSoft: self.params.get_int("WarningSoftVolume"),
+      AudibleAlert.warningImmediate: self.params.get_int("WarningImmediateVolume")
+    }
 
     custom_theme = self.params.get_bool("CustomTheme")
     custom_sounds = self.params.get_int("CustomSounds") if custom_theme else 0
