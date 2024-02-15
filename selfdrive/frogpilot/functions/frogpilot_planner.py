@@ -21,7 +21,6 @@ class FrogPilotPlanner:
     self.cem = ConditionalExperimentalMode()
     self.fpf = FrogPilotFunctions()
     self.mtsc = MapTurnSpeedController()
-    self.slc = SpeedLimitController
 
     self.override_slc = False
 
@@ -87,8 +86,8 @@ class FrogPilotPlanner:
 
     # Pfeiferj's Speed Limit Controller
     if self.speed_limit_controller:
-      self.slc.update_current_max_velocity(v_cruise)
-      self.slc_target = self.slc.desired_speed_limit
+      SpeedLimitController.update_current_max_velocity(v_cruise)
+      self.slc_target = SpeedLimitController.desired_speed_limit
 
       # Override SLC upon gas pedal press and reset upon brake/cancel button
       if self.speed_limit_controller_override:
@@ -162,7 +161,7 @@ class FrogPilotPlanner:
     frogpilotPlan.slcOverridden = self.override_slc
     frogpilotPlan.slcOverriddenSpeed = float(self.overridden_speed)
     frogpilotPlan.slcSpeedLimit = float(self.slc_target)
-    frogpilotPlan.slcSpeedLimitOffset = self.slc.offset
+    frogpilotPlan.slcSpeedLimitOffset = SpeedLimitController.offset
 
     frogpilotPlan.vtscControllingCurve = bool(self.mtsc_target > self.vtsc_target)
 
@@ -205,7 +204,7 @@ class FrogPilotPlanner:
     self.speed_limit_controller = params.get_bool("SpeedLimitController")
     if self.speed_limit_controller:
       self.speed_limit_controller_override = params.get_int("SLCOverride")
-      self.slc.update_frogpilot_params()
+      SpeedLimitController.update_frogpilot_params()
 
     self.vision_turn_controller = params.get_bool("VisionTurnControl")
     if self.vision_turn_controller:

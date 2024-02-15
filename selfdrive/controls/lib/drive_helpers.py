@@ -47,9 +47,6 @@ class VCruiseHelper:
     self.button_timers = {ButtonType.decelCruise: 0, ButtonType.accelCruise: 0}
     self.button_change_states = {btn: {"standstill": False, "enabled": False} for btn in self.button_timers}
 
-    # FrogPilot variables
-    self.slc = SpeedLimitController
-
   @property
   def v_cruise_initialized(self):
     return self.v_cruise_kph != V_CRUISE_UNSET
@@ -154,10 +151,10 @@ class VCruiseHelper:
     if any(b.type in (ButtonType.accelCruise, ButtonType.resumeCruise) for b in CS.buttonEvents) and self.v_cruise_kph_last < 250:
       self.v_cruise_kph = self.v_cruise_kph_last
     else:
-      self.v_cruise_kph = int(round(clip(CS.vEgo * CV.MS_TO_KPH, initial, V_CRUISE_MAX)))
-
-    if self.slc.desired_speed_limit != 0 and frogpilot_variables.set_speed_limit:
-      self.v_cruise_kph = self.slc.desired_speed_limit * CV.MS_TO_KPH
+      if SpeedLimitController.desired_speed_limit != 0 and frogpilot_variables.set_speed_limit:
+        self.v_cruise_kph = SpeedLimitController.desired_speed_limit * CV.MS_TO_KPH
+      else:
+        self.v_cruise_kph = int(round(clip(CS.vEgo * CV.MS_TO_KPH, initial, V_CRUISE_MAX)))
 
     self.v_cruise_cluster_kph = self.v_cruise_kph
 
