@@ -284,7 +284,7 @@ class CarInterface(CarInterfaceBase):
       tune.kpBP = [0., 5., 20.]
       tune.kpV = [1.3, 1.0, 0.7]
       tune.kiBP = [ 0.,  6.,  12., 20., 26., 33.]
-      tune.kiV =  [.34, .33, .28, .175, .10, .05]
+      tune.kiV =  [.34, .33, .29, .175, .10, .05]
 
       if candidate in TSS2_CAR:
         ret.stopAccel = -0.40
