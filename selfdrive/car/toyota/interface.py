@@ -283,14 +283,12 @@ class CarInterface(CarInterfaceBase):
       tune.deadzoneV = [0., .03, .06, .15]
       tune.kpBP = [0., 5., 20.]
       tune.kpV = [1.3, 1.0, 0.7]
-
-      # In MPH  = [ 0.,   2,    5,   11,   27,  45,  52,  67,   90] ​​
-      tune.kiBP = [ 0.,  1.,   2.,   5.,  12., 20., 23., 30.,  40.]
-      tune.kiV =  [.33, .33, .313, .245, .215, .17, .10, .01, .001]
+      tune.kiBP = [ 0.,  6.,  12., 20., 27., 33.]
+      tune.kiV =  [.34, .33, .28, .18, .10, .05]
 
       if candidate in TSS2_CAR:
         ret.stopAccel = -0.40
-        ret.stoppingDecelRate = 0.009  # reach stopping target smoothly
+        ret.stoppingDecelRate = 0.015  # reach stopping target smoothly
       else:
         ret.stopAccel = -2.5  # on stock Toyota this is -2.5
         ret.stoppingDecelRate = 0.3  # This is okay for TSS-P
@@ -301,9 +299,8 @@ class CarInterface(CarInterfaceBase):
       # TSS2 tune - Credit goes to the DragonPilot team!
       tune.kpBP = [0., 5., 20.]
       tune.kpV = [1.3, 1.0, 0.7]
-      # In MPH  = [ 0.,   2,    5,   11,   27,  45,  52,  67,   90] ​​
-      tune.kiBP = [ 0.,  1.,   2.,   5.,  12., 20., 23., 30.,  40.]
-      tune.kiV =  [.33, .33, .313, .245, .215, .17, .10, .01, .001]
+      tune.kiBP = [ 0.,  6.,  12., 20., 27., 33.]
+      tune.kiV =  [.34, .33, .28, .18, .10, .05]
       if candidate in TSS2_CAR:
         ret.vEgoStopping = 0.1         # car is near 0.1 to 0.2 when car starts requesting stopping accel
         ret.vEgoStarting = 0.1         # needs to be > or == vEgoStopping
