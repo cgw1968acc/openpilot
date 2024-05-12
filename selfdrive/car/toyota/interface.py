@@ -175,17 +175,19 @@ class CarInterface(CarInterfaceBase):
       tune.kpV = [1.3, 1.0, 0.7]
       # In MPH  = [  0,   27,   45,  60,  89]
       tune.kiBP = [ 0.,  1.,   12.,  20., 27., 40.]
-      tune.kiV =  [.33, .32,  .225, .20, .10, .01]
+      tune.kiV =  [.325, .32,  .225, .20, .10, .01]
       if candidate in TSS2_CAR:
         ret.vEgoStopping = 0.1         # car is near 0.1 to 0.2 when car starts requesting stopping accel
         ret.vEgoStarting = 0.1         # needs to be > or == vEgoStopping
         ret.stopAccel = -0.40          # Toyota requests -0.4 when stopped
         ret.stoppingDecelRate = 0.5    # reach stopping target smoothly
     elif candidate in TSS2_CAR or ret.enableGasInterceptor:
+      tune.deadzoneBP = [0., 4.,  16., 20., 30.]
+      tune.deadzoneV =  [0., 0.,  .03, .06, .15]
       tune.kpBP = [0., 5., 20.]
       tune.kpV = [1.3, 1.0, 0.7]
       tune.kiBP = [ 0., 1.,  12.,  20., 27., 40.]
-      tune.kiV =  [.33, .32, .225, .20, .10, .01]
+      tune.kiV =  [.325, .32, .225, .20, .10, .01]
       if candidate in TSS2_CAR:
         ret.vEgoStopping = 0.25
         ret.vEgoStarting = 0.25
