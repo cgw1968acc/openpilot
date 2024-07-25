@@ -140,8 +140,8 @@ class CarInterface(CarInterfaceBase):
       ret.stopAccel = -2.5             # on stock Toyota this is -2.5
       ret.stoppingDecelRate = 0.3      # reach stopping target smoothly
       if candidate in TSS2_CAR or ret.enableGasInterceptor:
-        tune.kpV = [0.0]
-        tune.kiV = [0.5]
+        tune.kpV = [0.0, 5., 16]
+        tune.kiV = [0.0, 0.5, 0.5]
         if params.get_bool("FrogsGoMooTune"):
           ret.vEgoStopping = 0.15
           ret.vEgoStarting = 0.15
