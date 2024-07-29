@@ -205,6 +205,11 @@ class CarInterface(CarInterfaceBase):
           # while in standstill, send a user alert
           events.add(EventName.manualRestart)
 
+    # auto brake hold
+    if self.CP.spFlags & ToyotaFlagsSP.SP_AUTO_BRAKE_HOLD:
+      if self.CC.brake_hold_active and not ret.brakeHoldActive:
+        events.add(EventName.spAutoBrakeHold)
+
     ret.events = events.to_msg()
 
     return ret, fp_ret
