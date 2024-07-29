@@ -208,7 +208,7 @@ class CarInterface(CarInterfaceBase):
     # auto brake hold
     if self.CP.spFlags & ToyotaFlagsSP.SP_AUTO_BRAKE_HOLD:
       if self.CC.brake_hold_active and not ret.brakeHoldActive:
-        events.add(EventName.spAutoBrakeHold)
+        events.add(EventName.AutoBrakeHold)
 
     ret.events = events.to_msg()
 
