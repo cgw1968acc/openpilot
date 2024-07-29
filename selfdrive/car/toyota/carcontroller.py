@@ -284,3 +284,27 @@ class CarController(CarControllerBase):
 
     self.frame += 1
     return new_actuators, can_sends
+
+
+  # auto brake hold (https://github.com/AlexandreSato/)
+  def create_auto_brake_hold_messages(self, CS: car.CarState, brake_hold_allowed_timer: int = 100):
+    can_sends = []
+    disallowed_gears = [GearShifter.park, GearShifter.reverse]
+    brake_hold_allowed = CS.out.standstill and CS.out.cruiseState.available and not CS.out.gasPressed and \
+                         not CS.out.cruiseState.enabled and (CS.out.gearShifter not in disallowed_gears)
+
+    if brake_hold_allowed:
+      self._brake_hold_counter += 1
+      self.brake_hold_active = self._brake_hold_counter > brake_hold_allowed_timer and not self._brake_hold_reset
+      self._brake_hold_reset = not self._prev_brake_pressed and CS.out.brakePressed and not self._brake_hold_reset
+    else:
+      self._brake_hold_counter = 0
+      self.brake_hold_active = False
+      self._brake_hold_reset = False
+    self._prev_brake_pressed = CS.out.brakePressed
+
+    if self.frame % 2 == 0:
+      can_sends.append(toyotacan.create_brake_hold_command(self.packer, self.frame, CS.pre_collision_2, self.brake_hold_active))
+
+    return can_sends
+
