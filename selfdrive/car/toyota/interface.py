@@ -303,25 +303,25 @@ class CarInterface(CarInterfaceBase):
     elif (candidate in TSS2_CAR or ret.enableGasInterceptor) and params.get_bool("DragonPilotTune"):
       # Credit goes to the DragonPilot team!
       tune.deadzoneBP = [0., 5.,  6.,   7.,   20., 30]
-      tune.deadzoneV = [0., 0., 0.001, 0.003, .06, .15]
+      tune.deadzoneV = [0., 0.001, 0.002, 0.003, .06, .15]
       tune.kpBP = [0., 5., 20.]
       tune.kpV = [1.3, 1.0, 0.7]
       # In MPH  = [  0,   27,   45,  60,  89]
-      tune.kiBP = [ 0.,  1.,  2.,   5.,  12.,  20., 27., 50.]
-      tune.kiV =  [.35, .32,  .29, .23,  .212, .171, .101, .01]
+      tune.kiBP = [ 0.,  1.,  2.,   5.,  12.,  20., 27., 40.]
+      tune.kiV =  [.35, .32,  .29, .23,  .212, .171, .101, .06]
       if candidate in TSS2_CAR:
-        ret.vEgoStopping = 0.1         # car is near 0.1 to 0.2 when car starts requesting stopping accel
-        ret.vEgoStarting = 0.1         # needs to be > or == vEgoStopping
+        ret.vEgoStopping = 0.05        # car is near 0.1 to 0.2 when car starts requesting stopping accel
+        ret.vEgoStarting = 0.05        # needs to be > or == vEgoStopping
         ret.stopAccel = -0.40          # Toyota requests -0.4 when stopped
         ret.stoppingDecelRate = 0.5    # reach stopping target smoothly
     elif candidate in TSS2_CAR or ret.enableGasInterceptor:
       tune.kpBP = [0., 5., 20.]
       tune.kpV = [1.3, 1.0, 0.7]
-      tune.kiBP = [0., 1.,  2.,   5.,  12., 20., 27., 50]
-      tune.kiV = [.35, .32, .29, .23, .212, .171, .101, .01]
+      tune.kiBP = [0., 1.,  2.,   5.,  12., 20., 27., 40]
+      tune.kiV = [.35, .32, .29, .23, .212, .171, .101, .06]
       if candidate in TSS2_CAR:
-        ret.vEgoStopping = 0.25
-        ret.vEgoStarting = 0.25
+        ret.vEgoStopping = 0.05
+        ret.vEgoStarting = 0.05
         ret.stoppingDecelRate = 0.3  # reach stopping target smoothly
     else:
       tune.kpBP = [0., 5., 35.]
