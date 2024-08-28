@@ -21,7 +21,7 @@ from openpilot.selfdrive.frogpilot.functions.frogpilot_functions import CRUISING
 
 LON_MPC_STEP = 0.2  # first step is 0.2s
 A_CRUISE_MIN = -1.2
-A_CRUISE_MAX_VALS = [2.2, 1.75, 1.3, 0.85, 0.77, 0.70, 0.58, 0.4,  0.31, 0.11]  # Sets the limits of the planner accel, PID may exceed
+A_CRUISE_MAX_VALS = [2.0, 2.0, 1.8, 1.3, 0.98, 0.74, 0.58, 0.53,  0.32, 0.09]  # Sets the limits of the planner accel, PID may exceed
 A_CRUISE_MAX_BP =   [0.,  3,    6.,  8.,   11.,  15.,  20.,  25.,  30.,  55.]
 
 ACCEL_MAX_PLUS = [ACCEL_MAX, 4.0]
