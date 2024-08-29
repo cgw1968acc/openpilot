@@ -21,7 +21,7 @@ from openpilot.selfdrive.frogpilot.functions.frogpilot_functions import CRUISING
 
 LON_MPC_STEP = 0.2  # first step is 0.2s
 A_CRUISE_MIN = -1.2
-A_CRUISE_MAX_VALS =   [2.0, 2.0, 2.0, 1.80, 1.11, .70,  .54,  .38,  .17]
+A_CRUISE_MAX_VALS =   [2.0, 2.0, 2.0, 1.85, 1.09, .71,  .54,  .38,  .17]
 A_CRUISE_MAX_BP =      [0.,  4.,  6.,  8.,   11.,  20.,  25.,  30.,  40.]
 
 ACCEL_MAX_PLUS = [ACCEL_MAX, 4.0]
