@@ -150,7 +150,7 @@ FrogPilotVehiclesPanel::FrogPilotVehiclesPanel(SettingsWindow *parent) : FrogPil
     {"ToyotaDoors", tr("Automatically Lock/Unlock Doors"), tr("Automatically lock the doors when in drive and unlock when in park."), ""},
     {"ClusterOffset", tr("Cluster Offset"), tr("Set the cluster offset openpilot uses to try and match the speed displayed on the dash."), ""},
     {"SNGHack", tr("Stop and Go Hack"), tr("Enable the 'Stop and Go' hack for vehicles without stock stop and go functionality."), ""},
-    {"ToyotaTune", tr("Toyota Tune"), tr("Use a custom Toyota longitudinal tune.\n\nCydia = More focused on TSS-P vehicles but works for all Toyotas\n\nFrogPilot = Takes the Cydia tune with some personal tweaks focused around FrogsGoMoo's 2019 Lexus ES 350"), ""},
+    {"ToyotaTune", tr("Toyota Tune"), tr("A longitudinal tune designed by comma and Cydia and tweaked by FrogsGoMoo to be perfectly tailored for FrogPilot.\n\nBenefits:\n\n- Accelerates quicker\n- Brakes smoother and attempts to \"coast\" a bit more\n- Comes to a complete standstill more smoothly\n- Takes off from a standstill sooner"), ""},
   };
 
   for (const auto &[param, title, desc, icon] : vehicleToggles) {
@@ -163,24 +163,6 @@ FrogPilotVehiclesPanel::FrogPilotVehiclesPanel(SettingsWindow *parent) : FrogPil
 
     } else if (param == "ClusterOffset") {
       vehicleToggle = new FrogPilotParamValueControl(param, title, desc, icon, 1.000, 1.050, std::map<int, QString>(), this, false, "x", 1, 0.001);
-
-    } else if (param == "ToyotaTune") {
-      std::vector<std::pair<QString, QString>> tuneOptions{
-        {"StockTune", tr("Stock")},
-        {"CydiaTune", tr("Cydia")},
-        {"FrogsGoMooTune", tr("FrogPilot")},
-      };
-
-      FrogPilotButtonsParamControl *toyotaTuneToggle = new FrogPilotButtonsParamControl(param, title, desc, icon, tuneOptions);
-      vehicleToggle = toyotaTuneToggle;
-
-      QObject::connect(toyotaTuneToggle, &FrogPilotButtonsParamControl::buttonClicked, [this]() {
-        if (started) {
-          if (FrogPilotConfirmationDialog::toggle(tr("Reboot required to take effect."), tr("Reboot Now"), this)) {
-            Hardware::reboot();
-          }
-        }
-      });
 
     } else {
       vehicleToggle = new ParamControl(param, title, desc, icon, this);
@@ -198,7 +180,7 @@ FrogPilotVehiclesPanel::FrogPilotVehiclesPanel(SettingsWindow *parent) : FrogPil
     });
   }
 
-  std::set<QString> rebootKeys = {"CrosstrekTorque"};
+  std::set<QString> rebootKeys = {"CrosstrekTorque", "ToyotaTune"};
   for (const QString &key : rebootKeys) {
     QObject::connect(static_cast<ToggleControl*>(toggles[key.toStdString().c_str()]), &ToggleControl::toggleFlipped, [this]() {
       if (started) {

@@ -180,8 +180,8 @@ private:
 
   QTimer *animationTimer;
 
-  std::vector<QPixmap> regularImages;
-  std::vector<QPixmap> blindspotImages;
+  QVector<QPixmap> regularImages;
+  QVector<QPixmap> blindspotImages;
 
   inline QColor blueColor(int alpha = 255) { return QColor(0, 150, 255, alpha); }
   inline QColor greenColor(int alpha = 242) { return QColor(23, 134, 68, alpha); }

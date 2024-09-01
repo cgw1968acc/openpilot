@@ -901,40 +901,21 @@ void AnnotatedCameraWidget::updateSignals() {
 
   const QString signalFolderPath = "../frogpilot/assets/active_theme/signals/";
   QDir directory(signalFolderPath);
+  const QTransform flipTransform = QTransform().scale(-1, 1);
 
   QFileInfoList fileList = directory.entryInfoList({"turn_signal_*.png"}, QDir::Files);
-
-  const QTransform flipTransform = QTransform().scale(-1, 1);
-  std::vector<QPixmap> flippedImages;
+  QFileInfoList nonPngFileList = directory.entryInfoList(QDir::Files | QDir::NoDotAndDotDot, QDir::Name);
+  nonPngFileList.erase(std::remove_if(nonPngFileList.begin(), nonPngFileList.end(), [](const QFileInfo &fileInfo) {return fileInfo.suffix() == "png";}), nonPngFileList.end());
 
   for (const QFileInfo &fileInfo : fileList) {
     QPixmap pixmap(fileInfo.absoluteFilePath());
-
-    if (fileInfo.fileName().contains("blindspot")) {
-      blindspotImages.push_back(pixmap);
-      blindspotImages.push_back(pixmap.transformed(flipTransform));
-    } else {
-      regularImages.push_back(pixmap);
-      flippedImages.push_back(pixmap.transformed(flipTransform));
-    }
-  }
-
-  regularImages.insert(regularImages.end(), flippedImages.begin(), flippedImages.end());
-
-  QFileInfoList nonPngFileList = directory.entryInfoList(QDir::Files | QDir::NoDotAndDotDot, QDir::Name);
-
-  for (QFileInfoList::iterator it = nonPngFileList.begin(); it != nonPngFileList.end(); ) {
-    if ((*it).suffix() == "png") {
-      it = nonPngFileList.erase(it);
-    } else {
-      it++;
-    }
+    QVector<QPixmap> *targetList = fileInfo.fileName().contains("blindspot") ? &blindspotImages : &regularImages;
+    targetList->push_back(pixmap);
+    targetList->push_back(pixmap.transformed(flipTransform));
   }
 
   if (!nonPngFileList.isEmpty()) {
-    const QFileInfo &fileInfo = nonPngFileList.first();
-    const QStringList parts = fileInfo.fileName().split('_');
-
+    QStringList parts = nonPngFileList.first().fileName().split('_');
     if (parts.size() == 2) {
       signalStyle = parts[0];
       signalAnimationLength = parts[1].toInt();

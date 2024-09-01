@@ -138,18 +138,8 @@ class CarInterface(CarInterfaceBase):
     ret.minEnableSpeed = -1. if (candidate in STOP_AND_GO_CAR or ret.enableGasInterceptor) else MIN_ACC_SPEED
 
     tune = ret.longitudinalTuning
-    if params.get_bool("CydiaTune"):
-      ret.stopAccel = -2.5           # on stock Toyota this is -2.5
-      ret.stoppingDecelRate = 0.3    # reach stopping target smoothly
-      if candidate in TSS2_CAR or ret.enableGasInterceptor:
-        tune.kiV = [0.5]
-        ret.vEgoStopping = 0.25
-        ret.vEgoStarting = 0.25
-      else:
-        tune.kiV = [1.2]             # appears to produce minimal oscillation on TSS-P
-    elif params.get_bool("FrogsGoMooTune"):
-      ret.stopAccel = -2.5           # on stock Toyota this is -2.5
-      ret.stoppingDecelRate = 0.1    # reach stopping target smoothly
+    if params.get_bool("ToyotaTune"):
+      ret.stoppingDecelRate = 0.1   # reach stopping target smoothly
       ret.vEgoStarting = 0.15
       ret.vEgoStopping = 0.15
       tune.kiV = [1.0]
