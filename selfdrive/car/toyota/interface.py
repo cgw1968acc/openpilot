@@ -140,15 +140,15 @@ class CarInterface(CarInterfaceBase):
     tune = ret.longitudinalTuning
     if params.get_bool("ToyotaTune"):
       ret.stoppingDecelRate = 0.1   # reach stopping target smoothly
-      ret.vEgoStarting = 0.15
-      ret.vEgoStopping = 0.15
+      ret.vEgoStarting = 0.01
+      ret.vEgoStopping = 0.01
       tune.kiV = [1.0]
     elif candidate in TSS2_CAR or ret.enableGasInterceptor:
       tune.kpV = [0.0]
       tune.kiV = [0.5]
       if candidate in TSS2_CAR:
-        ret.vEgoStopping = 0.25
-        ret.vEgoStarting = 0.25
+        ret.vEgoStopping = 0.01
+        ret.vEgoStarting = 0.01
         ret.stoppingDecelRate = 0.3  # reach stopping target smoothly
     else:
       tune.kiBP = [0., 5., 35.]
