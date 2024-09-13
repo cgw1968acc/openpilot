@@ -18,13 +18,15 @@ from openpilot.common.swaglog import cloudlog
 
 LON_MPC_STEP = 0.2  # first step is 0.2s
 A_CRUISE_MIN = -1.2
-A_CRUISE_MAX_VALS = [1.6, 1.2, 0.8, 0.6]
-A_CRUISE_MAX_BP = [0., 10.0, 25., 40.]
+A_CRUISE_MAX_VALS =   [2.0, 2.0, 1.75, 0.94, .58,  .46,  .34,  .12]
+A_CRUISE_MAX_BP =     [0.,  5.5,  8.,   11.,  20.,  25.,  30.,  40.]
+A_CRUISE_MIN_V =       [-0.020, -0.020, -0.020, -0.18,  -1.2, -1.2]
+A_CRUISE_MIN_BP =      [0.,     0.05,   5.0,    12.,    18.,   30.]
 CONTROL_N_T_IDX = ModelConstants.T_IDXS[:CONTROL_N]
 
 # Lookup table for turns
-_A_TOTAL_MAX_V = [1.7, 3.2]
-_A_TOTAL_MAX_BP = [20., 40.]
+_A_TOTAL_MAX_V = [1.6,  2.3, 3.2]
+_A_TOTAL_MAX_BP = [14,  20., 40.]
 
 # Kalman filter states enum
 LEAD_KALMAN_SPEED, LEAD_KALMAN_ACCEL = 0, 1
