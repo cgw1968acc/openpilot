@@ -20,8 +20,8 @@ LON_MPC_STEP = 0.2  # first step is 0.2s
 A_CRUISE_MIN = -1.2
 A_CRUISE_MAX_VALS =   [1.9, 2.0,  2.0,  1.83, 0.945, .588, .478,  .34,  .12]
 A_CRUISE_MAX_BP =     [0.,  1.0,  6.1,  8.,   11.,   20.,  25.,   30.,  40.]
-A_CRUISE_MIN_V =      [-0.2, -0.2, -0.2, -0.2, -0.36, -0.36, -0.68,  -1.0,  -1.02, -1.02]
-A_CRUISE_MIN_BP =     [0.,   0.05, 0.06,  3.11,  3.12,  10., 10.01,  16.,   20.,   30.]
+A_CRUISE_MIN_V =      [-0.2, -0.36, -0.36, -0.68, -0.68, -1.0,  -1.02]
+A_CRUISE_MIN_BP =     [0.,   8.33,  11.11, 11.12, 17.49, 22.2,  30.]
 CONTROL_N_T_IDX = ModelConstants.T_IDXS[:CONTROL_N]
 
 # Lookup table for turns
