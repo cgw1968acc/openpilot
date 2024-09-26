@@ -18,7 +18,7 @@ from openpilot.common.swaglog import cloudlog
 
 LON_MPC_STEP = 0.2  # first step is 0.2s
 A_CRUISE_MIN = -1.2
-A_CRUISE_MAX_VALS =   [1.9, 2.0,  2.0,  1.83, 0.945, .588, .478,  .34,  .12]
+A_CRUISE_MAX_VALS =   [1.9, 2.0,  2.0,  1.80, 0.93, .588, .478,  .34,  .12]
 A_CRUISE_MAX_BP =     [0.,  1.0,  6.1,  8.,   11.,   20.,  25.,   30.,  40.]
 A_CRUISE_MIN_V =      [-0.2, -0.2, -0.36, -0.36, -0.76, -0.76, -1.0,  -1.02]
 A_CRUISE_MIN_BP =     [0.,   8.33, 8.34,  11.11, 11.12, 17.49, 22.2,  30.]
