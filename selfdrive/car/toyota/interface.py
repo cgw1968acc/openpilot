@@ -140,9 +140,9 @@ class CarInterface(CarInterfaceBase):
     if candidate in TSS2_CAR:
       tune.kpV = [0.0]
       tune.kiV = [0.5]
-      ret.vEgoStopping = 0.25
-      ret.vEgoStarting = 0.25
-      ret.stoppingDecelRate = 0.3  # reach stopping target smoothly
+      ret.vEgoStopping = 0.20
+      ret.vEgoStarting = 0.20
+      ret.stoppingDecelRate = 0.1  # reach stopping target smoothly
 
       # Since we compensate for imprecise acceleration in carcontroller, we can be less aggressive with tuning
       # This also prevents unnecessary request windup due to internal car jerk limits
