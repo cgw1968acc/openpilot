@@ -477,8 +477,8 @@ EVENTS: dict[int, dict[str, Alert | AlertCallbackType]] = {
     ET.WARNING: Alert(
       "Steering Temporarily Unavailable",
       "",
-      AlertStatus.userPrompt, AlertSize.small,
-      Priority.LOW, VisualAlert.steerRequired, AudibleAlert.prompt, 1.8),
+      AlertStatus.normal, AlertSize.small,
+      Priority.LOW, VisualAlert.none, AudibleAlert.none, 0.0),
   },
 
   EventName.preDriverDistracted: {
@@ -1026,9 +1026,9 @@ EVENTS: dict[int, dict[str, Alert | AlertCallbackType]] = {
   EventName.goatSteerSaturated: {
     ET.WARNING: Alert(
       "Turn exceeds steering limit",
-      "JESUS TAKE THE WHEEL!!",
-      AlertStatus.userPrompt, AlertSize.mid,
-      Priority.LOW, VisualAlert.steerRequired, AudibleAlert.goat, 2.),
+      "TAKE THE WHEEL!!",
+      AlertStatus.normal, AlertSize.mid,
+      Priority.LOW, VisualAlert.none, AudibleAlert.none, 0.),
   },
 
   EventName.greenLight: {
@@ -1159,9 +1159,9 @@ EVENTS: dict[int, dict[str, Alert | AlertCallbackType]] = {
   EventName.firefoxSteerSaturated: {
     ET.WARNING: Alert(
       "Turn Exceeds Steering Limit",
-      "IE Has Stopped Responding...",
-      AlertStatus.userPrompt, AlertSize.mid,
-      Priority.LOW, VisualAlert.steerRequired, AudibleAlert.firefox, 4.),
+      " ",
+      AlertStatus.normal, AlertSize.mid,
+      Priority.LOW, VisualAlert.none, AudibleAlert.none, 0.),
   },
 
   EventName.hal9000: {
