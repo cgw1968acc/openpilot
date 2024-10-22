@@ -150,14 +150,14 @@ class CarInterface(CarInterfaceBase):
       # Since we compensate for imprecise acceleration in carcontroller, we can be less aggressive with tuning
       # This also prevents unnecessary request windup due to internal car jerk limits
       if ret.flags & ToyotaFlags.NEW_TOYOTA_TUNE or ret.flags & ToyotaFlags.RAISED_ACCEL_LIMIT:
-        tune.kiV = [0.25]
+        tune.kiV = [0.2]
     else:
       tune.kiBP = [0., 5., 35.]
-      tune.kiV = [3.6, 2.4, 1.5]
+      tune.kiV = [3.6, 2.3, 1.5]
 
     if params.get_bool("FrogsGoMoosTweak"):
       if ret.flags & ToyotaFlags.NEW_TOYOTA_TUNE or ret.flags & ToyotaFlags.RAISED_ACCEL_LIMIT:
-        tune.kiV = [0.3]
+        tune.kiV = [0.2]
 
       ret.stoppingDecelRate = 0.1  # reach stopping target smoothly
       ret.vEgoStopping = 0.15
